@@ -7,9 +7,7 @@ import matplotlib.pyplot as plt
 def calc_center_from_box(corners):
     
     assert len(corners) == 8
-    
-    print(corners)
-    
+        
     minx = min(corners[:,0])
     maxx = max(corners[:,0])
     miny = min(corners[:,1])
@@ -18,9 +16,9 @@ def calc_center_from_box(corners):
     maxz = max(corners[:,2])
 
     # calculate center
-    cx = (maxx-minx)/2
-    cy = (maxy-miny)/2
-    cz = (maxz-minz)/2
+    cx = (maxx+minx)/2
+    cy = (maxy+miny)/2
+    cz = (maxz+minz)/2
         
     return [cx, cy, cz]
 
@@ -44,6 +42,7 @@ def extract_trj(json_file, instanceID = 1):
                 trj[i,:] = center
         i += 1
     return trj
+
 
 
 def get_all_instanceids(json_file):
@@ -72,22 +71,28 @@ def get_all_instanceids(json_file):
     return ids_set, class_instance_dict
             
             
-def save_traj(sourcefilename, trj, iid):
-    savename = sourcefilename.replace("processedAABBs.json", "trj") + "_" + str(iid) + ".csv"
+            
+def find_key(input_dict, value):
+    return next((k for k, v in input_dict.items() if value in v), None)            
+
+def save_traj(sourcefilename, trj, iid, classname_dict):
+    objectname = find_key(classNameDict, iid)
+    print(objectname)
+    savename = sourcefilename.replace("processedAABBs.json", "extracted/trj") + "_" + str(iid)+ "_" + str(objectname) + ".csv"
     np.savetxt(savename, trj, delimiter=",")
     
     
 
 if __name__ == "__main__":
     json_file = "GrabbingPrimitives/recordings/rec_1/processedAABBs.json"
-    iids, _ = get_all_instanceids(json_file)
+    iids, classNameDict = get_all_instanceids(json_file)
     
-    print(iids)
+    print(classNameDict)
     
     
     for iid in iids:
     
         trj1 = extract_trj(json_file, iid)
     
-        save_traj(json_file, trj1, iid )
+        save_traj(json_file, trj1, iid, classNameDict)
     
