@@ -77,18 +77,18 @@ def find_key(input_dict, value):
 
 def save_traj(sourcefilename, trj, iid, classname_dict):
     objectname = find_key(classNameDict, iid)
-    print(objectname)
     savename = sourcefilename.replace("processedAABBs.json", "extracted/trj") + "_" + str(iid)+ "_" + str(objectname) + ".csv"
     np.savetxt(savename, trj, delimiter=",")
+    print(f"Saved to {savename}")
     
     
 
 if __name__ == "__main__":
+    
     json_file = "GrabbingPrimitives/recordings/rec_1/processedAABBs.json"
     iids, classNameDict = get_all_instanceids(json_file)
     
     print(classNameDict)
-    
     
     for iid in iids:
     

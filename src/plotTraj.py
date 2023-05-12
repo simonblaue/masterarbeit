@@ -11,12 +11,13 @@ json_file = "GrabbingPrimitives/recordings/rec_1/processedAABBs.json"
 
 iids, class_instances = get_all_instanceids(json_file)
 
-print(class_instances)
 fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
 
 for iid in iids:
 
-    file = json_file.replace("processedAABBs.json", f"trj_{iid}.csv")
+    objectname = find_key(class_instances, iid)
+    file = json_file.replace("processedAABBs.json", "extracted/trj") + "_" + str(iid)+ "_" + str(objectname) + ".csv"
+    
     trj1 = np.loadtxt(file, delimiter=",")
 
     xs = trj1[:,0]
