@@ -11,6 +11,8 @@ def get_velocity(trj, dt = 1):
 
 
 
+
+
 if __name__ == "__main__":
     
     filepath = "GrabbingPrimitives/recordings/rec_1/extracted/trj_1_hand.csv"
