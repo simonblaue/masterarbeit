@@ -2,7 +2,12 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
+from scipy.signal import argrelmin
 
+def get_velocity(trj, dt = 1):
+    v = np.zeros(np.shape(trj))
+    v[:-1,:] = trj[1:,:] - trj[:-1,:]
+    return v
     
 def calc_center_from_box(corners):
     
@@ -75,24 +80,65 @@ def get_all_instanceids(json_file):
 def find_key(input_dict, value):
     return next((k for k, v in input_dict.items() if value in v), None)            
 
-def save_traj(sourcefilename, trj, iid, classname_dict):
-    objectname = find_key(classNameDict, iid)
-    savename = sourcefilename.replace("processedAABBs.json", "extracted/trj") + "_" + str(iid)+ "_" + str(objectname) + ".csv"
-    np.savetxt(savename, trj, delimiter=",")
+def save_traj(sourcefilename, trj, iid):
+    savename = sourcefilename.replace("recordings", "trajectories").replace("processedAABBs.json", "trj") + "_" + str(iid) + ".csv"
+    np.savetxt(savename, trj, delimiter=",", header="x, y, z, vx, vy, vz")
     print(f"Saved to {savename}")
     
+    
+def ectract_from_jsonfiles(json_files, plot=False):
+    
+    for jf in json_files:
+        if plot: fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
+    
+        iids, classNameDict = get_all_instanceids(jf)
+        
+        for iid in iids:
+            
+            object = find_key(classNameDict, iid)
+            
+            if object == "hand":
+                trj_full = extract_trj(jf, iid)
+                v = get_velocity(trj_full)
+                
+                v_abs = np.linalg.norm(v, axis=1)
+    
+                t = np.linspace(0,1, len(v_abs))
+    
+                signal_lows_at_t = argrelmin(v_abs, order=50)
+                
+                i = 0
+                
+                for startidx, endidx in zip(signal_lows_at_t[0][:-1:2], signal_lows_at_t[0][1::2]):
+                
+                    trj_extracted = trj_full[startidx:endidx, :]
+                    
+                    if plot : ax.plot(trj_extracted[:,0], trj_extracted[:,1], trj_extracted[:,2], label=i)
+                    
+                    savedata = np.hstack((trj_full[startidx:endidx, :], v[startidx:endidx, :]))
+                
+                    save_traj(jf, savedata, i)
+                    
+                    i+=1
+                    
+        if plot:          
+            plt.legend()        
+            plt.show()
     
 
 if __name__ == "__main__":
     
-    json_file = "GrabbingPrimitives/recordings/rec_1/processedAABBs.json"
-    iids, classNameDict = get_all_instanceids(json_file)
+    jf1 = "GrabbingPrimitives/recordings/rec_1/processedAABBs.json"
+    jf2 = "GrabbingPrimitives/recordings/rec_2/processedAABBs.json"
+    jf3 = "GrabbingPrimitives/recordings/rec_3/processedAABBs.json"
+    jf4 = "GrabbingPrimitives/recordings/rec_4/processedAABBs.json"
     
-    print(classNameDict)
+    json_files = [jf1, jf2, jf3, jf4]
     
-    for iid in iids:
+    ectract_from_jsonfiles(json_files, True)
     
-        trj1 = extract_trj(json_file, iid)
     
-        save_traj(json_file, trj1, iid, classNameDict)
+    
+                
+            
     
