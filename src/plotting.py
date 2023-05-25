@@ -19,15 +19,23 @@ def hand_data(data, savename=None):
     for instance, color in zip(data, colors):
     
         trj = instance.trj
-        ax.plot(trj[:,0],trj[:,1],trj[:,2], label=str(instance), color=color)
+        ax.plot(trj[:,0],trj[:,1],trj[:,2], label=instance.id, color=color)
     
     plt.legend()
         
     if savename:
         plt.savefig("plots/" + savename + ".pdf")
         
-    plt.show()
     
+    
+    fig = plt.figure()
+    for instance, color in zip(data, colors):
+        plt.plot(instance.t , instance.abs_v, label=instance.id, color=color)
+    
+    plt.legend()
+    
+    
+    plt.show()
     return colors
 
 def instance_trj_3d(trjs, iids, label_dict, savename=None):

@@ -22,7 +22,7 @@ class RecordedInstance():
     def __init__(self, trj, id) -> None:
         self.trj = trj
         self.id = id
-        
+        self.t = range(len(self.trj))
         self.v = np.zeros(np.shape(trj))
         self.v[:-1,:] = trj[1:,:] - trj[:-1,:]
 
