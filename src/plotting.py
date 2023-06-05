@@ -16,8 +16,8 @@ def hand_data(data, savename=None):
     
     fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
     
-    for instance, color in zip(data, colors):
-    
+    for instance, color in zip(data.values(), colors):
+        
         trj = instance.trj
         ax.plot(trj[:,0],trj[:,1],trj[:,2], label=instance.id, color=color)
     
@@ -29,7 +29,7 @@ def hand_data(data, savename=None):
     
     
     fig = plt.figure()
-    for instance, color in zip(data, colors):
+    for instance, color in zip(data.values(), colors):
         plt.plot(instance.t , instance.abs_v, label=instance.id, color=color)
     
     plt.legend()

@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle
 
 from src import util
 
@@ -8,11 +9,11 @@ class RecordedData():
         self.label_dict = util.get_all_instanceids(json_file)
         self.hand_iids = self.label_dict["hand"]
         
-        self.recorded_hands = []
+        self.recorded_hands = {}
         
         for iid in self.hand_iids:
             trj = util.extract_trj(json_file, iid)
-            self.recorded_hands.append(RecordedInstance(trj, iid))
+            self.recorded_hands[iid] = RecordedInstance(trj, iid)
             
     
     def plot_pos(self):
@@ -36,11 +37,21 @@ class RecordedInstance():
         
         
 class ExtractedInteractionData():
-    def __init__(self, trj1, trj2, v1, v2) -> None:
-        self.trj1 = trj1
-        self.trj2 = trj2
-        self.v1 = v1
-        self.v2 = v2
+    def __init__(self, player1:RecordedInstance, player2:RecordedInstance) -> None:
+        self.player1 = player1
+        self.player2 = player2
+
         
     def plot():
         pass
+    
+    def save(self, filename):
+        
+        trj_array = np.hstack((self.player1.trj, self.player2.trj))
+        
+        with open(filename, 'wb') as outp:  # Overwrites any existing file.
+           np.savetxt(filename + ".csv", trj_array, delimiter=",")
+
+            
+    def __str__(self):
+        return f"{str(self.player1)}\n {str(self.player2)}"
