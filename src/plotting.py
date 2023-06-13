@@ -30,12 +30,13 @@ def hand_data(data, savename=None):
     
     fig = plt.figure()
     for instance, color in zip(data.values(), colors):
-        plt.plot(instance.t , instance.abs_v, label=instance.id, color=color)
+        plt.plot(instance.t[:-1] , instance.abs_v, label=instance.id, color=color)
     
     plt.legend()
     
     
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.001)
     return colors
 
 def instance_trj_3d(trjs, iids, label_dict, savename=None):
@@ -55,12 +56,13 @@ def instance_trj_3d(trjs, iids, label_dict, savename=None):
     if savename:
         plt.savefig("plots/" + savename + ".pdf")
         
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.001)
     
     return colors
     
     
-def animate_trjs_3d(trjs, iids, label_dict, savename=None):
+def animate_trjs_3d(trjs, savename=None, show=False, delta_t=30):
     fig, ax = plt.subplots(subplot_kw=dict(projection="3d"))
     
     num_of_lines = len(trjs)
@@ -70,6 +72,7 @@ def animate_trjs_3d(trjs, iids, label_dict, savename=None):
     colors = [randomcolor() for _ in range(num_of_lines)]
     
     num_of_frames = len(trjs[0])
+    print(num_of_frames)
     
     lines = [[] for _ in range(num_of_lines)]
     
@@ -90,7 +93,10 @@ def animate_trjs_3d(trjs, iids, label_dict, savename=None):
                 ax.plot(xs,ys,zs, color=color)
     
     
-    anim = FuncAnimation(fig, animate, interval=30)
+    anim = FuncAnimation(fig, animate, interval=delta_t, frames=num_of_frames)
+    
+    if show:
+        plt.show()
     
     return anim
 
@@ -109,4 +115,27 @@ def trj_3d(trjs, labels, legend=False, savename=None):
     if savename:
         plt.savefig("plots/" + savename + ".pdf")
         
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.001)
+    
+    
+def v_profiles(vs, t):
+    
+    fig, ax = plt.subplots(layout='constrained')
+    ax2 = ax.twiny()
+    ax.set_xlabel('Time [seconds]')
+    ax.set_ylabel('Abs. Velocity [m/s]')
+    
+    for v in vs:
+        v_abs = np.linalg.norm(v, axis=1)
+        ax.plot(t[:-1], v_abs)
+        ax2.plot(range(len(t)-1), v_abs)
+    
+
+    ax2.set_xlabel('Time [steps]')
+    # ax2.cla()
+    
+
+
+    plt.show(block=False)
+    plt.pause(0.001)

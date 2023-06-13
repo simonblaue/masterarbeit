@@ -32,9 +32,11 @@ def calc_center_from_box_corners(corners):
     return [cx, cy, cz]
 
 
-def get_velocity_from_trj(trj, dt = 1):
-    v = np.zeros(np.shape(trj))
-    v[:-1,:] = trj[1:,:] - trj[:-1,:]
+def get_velocity_from_trj(trj, t):
+    v = np.zeros((len(t)-1,3))    
+    v[:,0] = (trj[1:,0] - trj[:-1,0]) * (t[1:] - t[:-1])
+    v[:,1] = (trj[1:,1] - trj[:-1,1]) * (t[1:] - t[:-1])
+    v[:,2] = (trj[1:,2] - trj[:-1,2]) * (t[1:] - t[:-1])
     return v
 
 
@@ -72,20 +74,42 @@ def find_key(input_dict, value):
 def extract_trj(json_file, instanceID):
 
     with open(json_file) as json_data:
-        data = json.load(json_data)
+        trj_data = json.load(json_data)
+    with open(json_file.replace("processedAABBs", "Timestamp")) as json_time_data:
+        time_data = json.load(json_time_data)
 
-    trj = np.zeros((len(data.keys())-1, 3))
+    trj = np.zeros((trj_data["NumOfFrames"], 4))
     trj[:] = np.nan
 
+    t_offset = time_data["0"]
+    
     i = 0
-    for key, vals in data.items():
+    for key, vals in trj_data.items():
         if key == "NumOfFrames":
             return trj
+                
+        t = (time_data[key] - t_offset) #* 10 # *10 for seconds
+        
         bounding_boxes = vals["AABBs"]
         for boxDict in bounding_boxes:
             if boxDict["InstanceID"] == instanceID:
                 corners = boxDict["Vertices"]
                 center = calc_center_from_box_corners(np.array(corners))
-                trj[i,:] = center
+                trj[i,1:] = center
+                trj[i,0] = t
         i += 1
     return trj
+
+def extract_time_spacing(timestampfile):
+    with open(timestampfile) as json_data:
+        data = json.load(json_data)
+        
+    num_timesteps = data["NumOfFrames"]
+    
+    delta_ts = np.zeros(num_timesteps-1)
+    
+    for i in range(num_timesteps-1):
+        
+        delta_ts[i] = data[f"{i+1}"] - data[f"{i}"]
+    return delta_ts
+    
