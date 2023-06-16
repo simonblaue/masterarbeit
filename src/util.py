@@ -113,3 +113,6 @@ def extract_time_spacing(timestampfile):
         delta_ts[i] = data[f"{i+1}"] - data[f"{i}"]
     return delta_ts
     
+    
+def artificial_grabing_data():
+    

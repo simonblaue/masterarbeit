@@ -25,12 +25,12 @@ def main():
     cut3 = run3.replace("recordings","trajectories") + "two_trjs_cut.csv"
     cut4 = run4.replace("recordings","trajectories") + "two_trjs_cut.csv"
    
-    # extract_data_and_save(run1, jf, ids=[14,8])
+    #extract_data_and_save(run1, jf, ids=[14,8])
     # extract_data_and_save(run2, jf, ids=[]) # 4, 1
     # extract_data_and_save(run3, jf, ids=[1,2])
     # extract_data_and_save(run4, jf, ids=[1,4])
     
-    # cut_two_trjs(run1.replace("recordings","trajectories") + "two_trjs_raw.csv", t_idxs=[396, 733])
+    #cut_two_trjs(run1.replace("recordings","trajectories") + "two_trjs_raw.csv", t_idxs=[396, 733])
     # cut_two_trjs(run2.replace("recordings","trajectories") + "two_trjs_raw.csv", t_idxs=[0, 420])
     # cut_two_trjs(run3.replace("recordings","trajectories") + "two_trjs_raw.csv", t_idxs=[57, 460])
     # cut_two_trjs(run4.replace("recordings","trajectories") + "two_trjs_raw.csv", t_idxs=[147, 512])
@@ -51,8 +51,9 @@ def main():
 
     # plotting.v_profiles([v1,v2], t)
     
-    save_each_interaction(cut2, plot_minima=True)
-        
+    # save_each_interaction(cut4, plot_minima=False, plot=True)
+
+    plotting.one_interaction(cut1.replace("two_trjs_cut.csv", "each_interaction_separated.json"), 1)        
     
 def extract_data_and_save(folder_path, jf, ids=[]):
     

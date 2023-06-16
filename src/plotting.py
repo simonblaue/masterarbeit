@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt 
 from matplotlib.animation import FuncAnimation
 import random
-
 import numpy as np
+import json
 
 def randomcolor():
     return "#"+''.join([random.choice('ABCDEF0123456789') for i in range(6)])
@@ -139,3 +139,33 @@ def v_profiles(vs, t):
 
     plt.show(block=False)
     plt.pause(0.001)
+    
+def one_interaction(json_file, id, save=False):
+    
+    with open(json_file, 'r') as f:
+        interactions = json.load(f)
+    
+    interaction = interactions[str(id)]
+    
+    trj1 = np.array(interaction["trj1"])
+    trj2 = np.array(interaction["trj2"])
+    #t = np.array(interaction["t"])
+    
+    _, ax = plt.subplots(subplot_kw=dict(projection="3d"))
+    
+    ax.plot(trj1[:,0], trj1[:,1], trj1[:,2], label="Player 1")
+    ax.plot(trj2[:,0], trj2[:,1], trj2[:,2], label="Player 2")
+    
+    
+    ax.scatter(trj1[0,0], trj1[0,1], trj1[0,2], marker='o', color="black", label="Start")
+    ax.scatter(trj1[-1,0], trj1[-1,1], trj1[-1,2], marker='x', color='red', label="End")
+    
+    ax.scatter(trj2[0,0], trj2[0,1], trj2[0,2], marker='o', color="black")
+    ax.scatter(trj2[-1,0], trj2[-1,1], trj2[-1,2], marker='x', color='red')
+    
+    # ax.legend([line1, line2, start1, end1], ["Player 1", "Player 2", "Start", "End"])
+
+    ax.legend()    
+    plt.show(block=False)
+    plt.pause(0.001)
+    
