@@ -107,6 +107,8 @@ def trj_3d(trjs, labels, legend=False, savename=None):
     for trj, label in zip(trjs,labels):
     
         ax.plot(trj[:,0],trj[:,1],trj[:,2], label=label)
+        ax.scatter(trj[0,0], trj[0,1], trj[0,2], marker='o', color="black", label="Start")
+        ax.scatter(trj[-1,0], trj[-1,1], trj[-1,2], marker='x', color='red', label="End")
     
     
     if legend:

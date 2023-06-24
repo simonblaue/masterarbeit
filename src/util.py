@@ -114,5 +114,39 @@ def extract_time_spacing(timestampfile):
     return delta_ts
     
     
-def artificial_grabing_data():
+def artificial_grabing_data(start, end , duration=5, delta_t=0.01):
+    """Generates a normal parabola, from start point to endpoint in z direction in the plain of z-stat-endpoint. 
+    Start and endpoint should lie on the x-y plane.
+
+    Args:
+        start (np.array): [x,y,z]
+        end (np.array): [x,y,z]
+        duration (int, optional): Total time. Defaults to 5.
+        delta_t (float, optional): One timestep size. Defaults to 0.01.
+
+    Returns:
+        np.array shape(num_timesteps, 3):  (t, The curve in 3D).
+    """
+    
+    t = np.arange(0,duration+delta_t, delta_t)
+        
+        
+    s = -t**2 + duration * t
+    # base vectors for plane in which the parabola lives
+    e_t = (end-start)/np.linalg.norm(end-start)
+    e_z = np.array([0,0,1])
+    
+    gamma = []
+    
+    for i,_ in enumerate(t):
+        gamma.append(t[i] * e_t + s[i] * e_z + start)
+    
+    gamma = np.array(gamma)
+    
+    
+    return gamma
+    
+
+    
+
     
