@@ -4,8 +4,8 @@ import time
 import json
 
 import datetime
-# import vlc
-# player = Player()
+import vlc
+
 
 
 
@@ -39,8 +39,8 @@ while running_exp:
 
     file1 = audio_folder_path + experiment['player1_to'] + "_" + experiment['player2_to'] + ".m4a"
     file2 = audio_folder_path + experiment['player1_from'] + "_" + experiment['player2_from'] + ".m4a"
-    # audio_player1 = vlc.MediaPlayer(file1)
-    # audio_player2 = vlc.MediaPlayer(file2)
+    audio_player1 = vlc.MediaPlayer(file1)
+    audio_player2 = vlc.MediaPlayer(file2)
 
     if file1 not in files or file2 not in files:
         print("We dont have the Audio to do this expermient, they would reach the same object or an object not existing.")
@@ -50,12 +50,13 @@ while running_exp:
 
     if start_inp == "y":
         # play file1
-        # audio_player1.play()
+        audio_player1.play()
         start_time = time.time()
         experiments[counter]["reach_to"] = {}
         experiments[counter]["reach_to"]["time"] = start_time
         experiments[counter]["reach_to"]["player1"] = player1_to
         experiments[counter]["reach_to"]["player2"] = player2_to
+        # audio_player1.stop()
     elif start_inp == "q":
         print("Stopped experiment")
         break
@@ -63,13 +64,13 @@ while running_exp:
     start2_inp = input("To start reach back press y")
     if start2_inp == "y":
         # play file 2
-        # player.loadfile(file2)
-        # audio_player2.play()
+        audio_player2.play()
         start_time = time.time()
         experiments[counter]["reach_back"] = {}
         experiments[counter]["reach_back"]["time"] = start_time
         experiments[counter]["reach_back"]["player1"] = player1_from
         experiments[counter]["reach_back"]["player2"] = player2_from
+        # audio_player2.stop()
         # print("Started reach back at: " + str(start_time))
         
     elif start_inp == "q":
