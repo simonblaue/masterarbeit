@@ -103,6 +103,7 @@ def auto_run():
 
         for exps in exp_list.keys():
             experiments[exps] = {}
+            print(f"Startet exp {exps}")
             for run in exp_list[exps]:
                 experiments[exps][run] = {}
                 file1 = audio_folder_path + exp_list[exps][run]['player1_to'] + "_" + exp_list[exps][run]['player2_to'] + ".m4a"
@@ -120,6 +121,9 @@ def auto_run():
                     experiments[exps][run]["reach_to"]["player1"] = exp_list[exps][run]['player1_to']
                     experiments[exps][run]["reach_to"]["player2"] = exp_list[exps][run]['player2_to']
                 else:
+                    with open(saves_folder_path + f'{datetime.datetime.now()}.json', 'w', encoding='utf-8') as f:
+                        json.dump(experiments, f, ensure_ascii=False, indent=4)
+                    print("Done recording and saved.")
                     return
                 
                 go_on = input("Continue? y/n")
