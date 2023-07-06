@@ -1,0 +1,63 @@
+
+{
+    "exp1": {
+        "round1":{
+            "player1_from": "A",
+            "player1_to": "E",
+            "player2_from": "C",
+            "player2_to": "A"
+        },
+        "round2":{
+            "player1_from": "A",
+            "player1_to": "C",
+            "player2_from": "C",
+            "player2_to": "A"
+        },
+        "round3":{
+            "player1_from": "A",
+            "player1_to": "C",
+            "player2_from": "C",
+            "player2_to": "E"
+        }
+    },
+        "exp2": {
+        "round1":{
+            "player1_from": "D",
+            "player1_to": "E",
+            "player2_from": "B",
+            "player2_to": "D"
+        },
+        "round2":{
+            "player1_from": "D",
+            "player1_to": "B",
+            "player2_from": "B",
+            "player2_to": "D"
+        },
+        "round3":{
+            "player1_from": "D",
+            "player1_to": "B",
+            "player2_from": "B",
+            "player2_to": "E"
+        }
+    },
+        "exp3": {
+        "round1":{
+            "player1_from": "B",
+            "player1_to": "E",
+            "player2_from": "D",
+            "player2_to": "B"
+        },
+        "round2":{
+            "player1_from": "B",
+            "player1_to": "D",
+            "player2_from": "D",
+            "player2_to": "B"
+        },
+        "round3":{
+            "player1_from": "B",
+            "player1_to": "D",
+            "player2_from": "D",
+            "player2_to": "E"
+        }
+    }
+}
