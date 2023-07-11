@@ -130,7 +130,6 @@ def artificial_grabing_data(start, end , duration=5, delta_t=0.01):
     
     t = np.arange(0,duration+delta_t, delta_t)
         
-        
     s = -t**2 + duration * t
     # base vectors for plane in which the parabola lives
     e_t = (end-start)/np.linalg.norm(end-start)
@@ -144,7 +143,7 @@ def artificial_grabing_data(start, end , duration=5, delta_t=0.01):
     gamma = np.array(gamma)
     
     
-    return gamma
+    return t, gamma
     
 
     
