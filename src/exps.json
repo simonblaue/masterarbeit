@@ -21,6 +21,10 @@
         }
     },
         "exp2": {
+        "round0":{
+            "player1_to": "D",
+            "player2_to": "B"
+        },    
         "round1":{
             "player1_from": "D",
             "player1_to": "E",
@@ -41,6 +45,10 @@
         }
     },
         "exp3": {
+        "round0":{
+            "player1_to": "B",
+            "player2_to": "D"
+        },
         "round1":{
             "player1_from": "B",
             "player1_to": "E",
