@@ -127,18 +127,21 @@ def artificial_grabing_data(start, end , duration=5, delta_t=0.01):
     Returns:
         np.array shape(num_timesteps, 3):  (t, The curve in 3D).
     """
-    
+    alpha = 0.2
     t = np.arange(0,duration+delta_t, delta_t)
-        
-    s = -t**2 + duration * t
+
+    # Absolute velocits v_abs(t)
+    s =  t*(duration-t)
+
     # base vectors for plane in which the parabola lives
-    e_t = (end-start)/np.linalg.norm(end-start)
+    e_t = (end-start) #/np.linalg.norm(end-start)
+    print("Normalized et: ", e_t )
     e_z = np.array([0,0,1])
     
     gamma = []
     
     for i,_ in enumerate(t):
-        gamma.append(t[i] * e_t + s[i] * e_z + start)
+        gamma.append(alpha * t[i] / duration * e_t + s[i] * e_z + start)
     
     gamma = np.array(gamma)
     
